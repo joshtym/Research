@@ -21,6 +21,8 @@ def myFunction():
    combinationSize = []
    generatingSets = []
    sizeOfAut = []
+   minGroupSize = 100000000
+   generatingSet = []
 
    for g in G1:
       for h in G1:
@@ -48,19 +50,33 @@ def myFunction():
                testList2.append(inverse2[inverse1.index(k)])
          for k in testList2:
             testList1.append(k)
-         setsOfInverseClosed.append(list(set(testList1)))
+         #setsOfInverseClosed.append(list(set(testList1)))
+         setInverseClosed = list(set(testList1))
+         perm = PermutationGroup(setInverseClosed)
+         if perm.cardinality() == groupSize:
+            size = G1.cayley_graph(generators=setInverseClosed).to_undirected().automorphism_group().cardinality()
+            if size < minGroupSize:
+               minGroupSize = size
+               generatingSet = setInverseClosed
 
-   for s in setsOfInverseClosed:
-      perm = PermutationGroup(s)
-      isActualSet = True
-      if perm.cardinality() == groupSize:
-         generatingSets.append(s)
-
-   for gs in generatingSets:
-      sizeOfAut.append(G1.cayley_graph(generators=gs).to_undirected().automorphism_group().cardinality())
-
-   print("Minimum value of the cardinality of automorphism groups of cayley graphs is : " + str(min(sizeOfAut)))
-   print("r / |G| = " + str(min(sizeOfAut) / G1.cardinality()))
+   print("Minimum value of the cardinality of automorphism groups of cayley graphs is : " + str(minGroupSize))
+   print("r / |G| = " + str(minGroupSize / groupSize))
+   print("Generating set is : ")
+   print(generatingSet)
    print("End time of program is " + str(datetime.datetime.now()))
+
+
+   #for s in setsOfInverseClosed:
+#      perm = PermutationGroup(s)
+#      isActualSet = True
+#      if perm.cardinality() == groupSize:
+#         generatingSets.append(s)#
+
+#   for gs in generatingSets:
+#      sizeOfAut.append(G1.cayley_graph(generators=gs).to_undirected().automorphism_group().cardinality())#
+
+#   print("Minimum value of the cardinality of automorphism groups of cayley graphs is : " + str(min(sizeOfAut)))
+#   print("r / |G| = " + str(min(sizeOfAut) / G1.cardinality()))
+#   print("End time of program is " + str(datetime.datetime.now()))
    
 myFunction()
