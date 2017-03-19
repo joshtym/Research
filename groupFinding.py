@@ -3,17 +3,24 @@ import itertools
 import datetime
 
 def myFunction():
-   print("Start time of program is : " + str(datetime.datetime.now()))
-   nValue = 1
-   Zmod2 = SymmetricGroup(2)
-   Q8 = QuaternionGroup()
-   ZmodGroupN = Zmod2
+   f1 = open('./output.debug', 'w+')
+   f1.write("Start time of program is : " + str(datetime.datetime.now()) + "\n")
+   #nValue = 4
+   #Zmod2 = SymmetricGroup(2)
+   #Q8 = QuaternionGroup()
+   #ZmodGroupN = Zmod2
 
-   for i in range(nValue - 1):
-      ZmodGroupN = direct_product_permgroups([ZmodGroupN, Zmod2])
+   #for i in range(nValue - 1):
+      #ZmodGroupN = direct_product_permgroups([ZmodGroupN, Zmod2])
 
-   G1 = direct_product_permgroups([Q8, ZmodGroupN])
+   F = FreeGroup(3, [a,b,x])
+   G = F/[a**8,b**4,x**2*a**-4,a*b*(b*a)**-1,x*a*((a**-1)*x)**-1,x*b*((b**-1)*x)**-1]
+   f1.write(str(G) + "\n")
+   #G = direct_product_permgroups([CyclicPermutationGroup(3),CyclicPermutationGroup(3)])
+   #G1 = direct_product_permgroups([CyclicPermutationGroup(3),G])
+   G1 = G.as_permutation_group()
    groupSize = G1.cardinality()
+   f1.write(str(groupSize) + "\n")
 
    inverse1 = []
    inverse2 = []
@@ -40,8 +47,14 @@ def myFunction():
       combinationSize.append(counter)
       counter = counter + 1
 
+   counter = 1
    for cs in combinationSize:
+      f1.write("Iteration : " + str(counter) + "\n")
+      counter += 1
+      otherRandomCounter = 1
       for j in itertools.combinations(inverse1,cs):
+         f1.write("Counter: " + str(otherRandomCounter) + "\n")
+         otherRandomCounter+=1
          testList1 = []
          for k in list(j):
             testList1.append(k)
@@ -59,11 +72,11 @@ def myFunction():
                minGroupSize = size
                generatingSet = setInverseClosed
 
-   print("Minimum value of the cardinality of automorphism groups of cayley graphs is : " + str(minGroupSize))
-   print("r / |G| = " + str(minGroupSize / groupSize))
-   print("Generating set is : ")
-   print(generatingSet)
-   print("End time of program is " + str(datetime.datetime.now()))
+   f1.write("Minimum value of the cardinality of automorphism groups of cayley graphs is : " + str(minGroupSize) + "\n")
+   f1.write("r / |G| = " + str(minGroupSize / groupSize) + "\n")
+   f1.write("Generating set is : \n")
+   f1.write(generatingSet + "\n")
+   f1.write("End time of program is " + str(datetime.datetime.now()) + "\n")
 
 
    #for s in setsOfInverseClosed:
